@@ -33,5 +33,4 @@ jobs:
       - name: Run tests
         run: |
           chmod +x gradlew
-          ./gradlew jacocoTestProdDebugUnitTestReport
-          ./gradlew copyUnitTestBuildArtifacts
+          ./gradlew jacocoTestDebugUnitTestReport
