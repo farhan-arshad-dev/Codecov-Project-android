@@ -1,0 +1,37 @@
+name: Android Test Suite
+
+# The workflow will start for every PR against master branch
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+# Multiple jobs run in parallel
+jobs:
+  android_test_cases:
+    name: Android Unit Tests
+    runs-on: ubuntu-20.04
+
+    steps:
+      # Checkouts the current branch for processing
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Setup the Java environment
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      # Cache and restore the Gradle dependencies on multiple runs
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      # Run android unit tests & organize test reports
+      - name: Run tests
+        run: |
+          chmod +x gradlew
+          ./gradlew jacocoTestProdDebugUnitTestReport
+          ./gradlew copyUnitTestBuildArtifacts
